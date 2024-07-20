@@ -4,6 +4,7 @@ import commands.CommandHandler;
 import commands.CommandManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
@@ -14,6 +15,7 @@ public class Bot extends ListenerAdapter {
 
     private static void initBot(String discordAPI) {
         JDA jda = JDABuilder.createDefault(discordAPI)
+                .setActivity(Activity.customStatus("What are we eating?"))
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                 .build();
         CommandManager commandManager = new CommandManager(jda);
