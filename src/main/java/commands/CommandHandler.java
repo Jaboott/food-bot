@@ -8,8 +8,15 @@ public class CommandHandler extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (event.getName().equals("echo")) {
-            event.reply(event.getOption("message").getAsString()).queue();
+        switch (event.getName()) {
+            case "echo":
+                event.reply(event.getOption("message").getAsString()).queue();
+                break;
+            case "add":
+                event.reply(event.getOption("restaurant").getAsString() + " added").queue();
+                break;
+            case "random":
+                event.reply("To be added").queue();
         }
     }
 

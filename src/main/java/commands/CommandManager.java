@@ -14,7 +14,11 @@ public class CommandManager {
     public void initCommands() {
         jda.updateCommands().addCommands(
                 Commands.slash("echo", "Repeats messages back to you.")
-                        .addOption(OptionType.STRING, "message", "The message to repeat.")
+                        .addOption(OptionType.STRING, "message", "The message to repeat."),
+                Commands.slash("add", "Add a restaurant to the bot.")
+                        .addOption(OptionType.STRING, "restaurant", "The name of the restaurant."),
+                Commands.slash("random", "Chooses a random restaurant stored to recommend.")
         ).queue();
+        System.out.println("Finish loading commands");
     }
 }
