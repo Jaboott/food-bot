@@ -39,12 +39,15 @@ public class DatabaseManager {
 
     public String getRestaurant() throws SQLException{
         String query = "SELECT name FROM restaurants WHERE id = (?)";
-        try {
-            var pstmt = connection.prepareStatement(query);
+        try (var pstmt = connection.prepareStatement(query)){
             int nRow =  getRows();
+
+            if (nRow == 0) {
+                throw new SQLException("No restaurant in database");
+            }
+
             int rRow = random.nextInt(nRow) + 1;
             pstmt.setInt(1, rRow);
-
             var result = pstmt.executeQuery();
             return result.getString("name");
         } catch (SQLException e) {
@@ -55,8 +58,7 @@ public class DatabaseManager {
 
     private int getRows() throws SQLException {
         String query = "SELECT COUNT(name) FROM restaurants";
-        try {
-            var stmt = connection.createStatement();
+        try (var stmt = connection.createStatement()) {
             var rows = stmt.executeQuery(query);
             return rows.getInt("count(name)");
         } catch (SQLException e) {
