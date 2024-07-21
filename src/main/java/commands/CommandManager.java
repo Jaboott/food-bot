@@ -17,8 +17,9 @@ public class CommandManager {
                         .addOption(OptionType.STRING, "message", "The message to repeat."),
                 Commands.slash("add", "Add a restaurant to the bot.")
                         .addOption(OptionType.STRING, "restaurant", "The name of the restaurant."),
-                Commands.slash("random", "Chooses a random restaurant stored to recommend.")
+                Commands.slash("random", "Chooses a random restaurant for you.")
         ).queue();
+
         System.out.println("Finish loading commands");
     }
 }

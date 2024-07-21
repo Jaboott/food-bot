@@ -2,6 +2,7 @@ package listener;
 
 import commands.CommandHandler;
 import commands.CommandManager;
+import database.DatabaseManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -18,10 +19,12 @@ public class Bot extends ListenerAdapter {
                 .setActivity(Activity.customStatus("What are we eating?"))
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                 .build();
+
+        DatabaseManager databaseManager = new DatabaseManager();
         CommandManager commandManager = new CommandManager(jda);
         commandManager.initCommands();
         jda.addEventListener(new Bot());
-        jda.addEventListener(new CommandHandler());
+        jda.addEventListener(new CommandHandler(databaseManager));
     }
 
 }
