@@ -29,7 +29,12 @@ public class CommandHandler extends ListenerAdapter {
                 }
                 break;
             case "random":
-                event.reply("To be added").queue();
+                try {
+                    String restaurant = databaseManager.getRestaurant();
+                    event.reply("Time to eat! " + restaurant + " has been chosen just for you. Have a great time and enjoy the food!").queue();
+                } catch (SQLException e) {
+                    event.reply( "Failed to retrieve restaurant").queue();
+                }
         }
     }
 
