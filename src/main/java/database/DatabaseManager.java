@@ -34,6 +34,7 @@ public class DatabaseManager {
         String queryFts = "INSERT INTO restaurants_fts(rowid, name, cuisine, location) VALUES (?, ?, ?, ?)";
         int id;
 
+        // Attempt adding to main table
         try {
             // Connection won't commit until both update is done successfully
             connection.setAutoCommit(false);
@@ -55,6 +56,7 @@ public class DatabaseManager {
                 }
             }
 
+            // Attempt adding to fts table
             try (var pstmt = connection.prepareStatement(queryFts)) {
                 pstmt.setInt(1, id);
                 pstmt.setString(2, restaurant.getName());
@@ -65,7 +67,6 @@ public class DatabaseManager {
 
             connection.commit();
         } catch (SQLException e) {
-            //TODO add uniqueness check
             System.out.println("Failed to add restaurant");
             System.out.println(e.getMessage());
             connection.rollback();

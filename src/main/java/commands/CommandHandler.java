@@ -3,6 +3,7 @@ package commands;
 import database.DatabaseManager;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.sqlite.SQLiteErrorCode;
 import restaurant.Cuisine;
 import restaurant.GeneralLocation;
 import restaurant.Restaurant;
@@ -46,7 +47,13 @@ public class CommandHandler extends ListenerAdapter {
                     databaseManager.addRestaurant(restaurant);
                     event.getHook().sendMessage("**" + restaurant.getName() + "** added").queue();
                 } catch (SQLException e) {
-                    event.reply( "Failed to add restaurant").queue();
+
+                    // Check if the error comes from failing uniqueness
+                    if (e.getErrorCode() == SQLiteErrorCode.SQLITE_CONSTRAINT.code) {
+                        event.getHook().sendMessage("The restaurant is already in the database").queue();
+                    } else {
+                        event.getHook().sendMessage("Failed to add restaurant").queue();
+                    }
                 }
                 break;
             case "random":
