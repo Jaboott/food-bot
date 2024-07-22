@@ -28,7 +28,6 @@ public class CommandManager {
         System.out.println("Finish loading commands");
     }
 
-
     private OptionData buildCuisine() {
         OptionData optionData = new OptionData(OptionType.STRING, "type", "The type of cuisine", true);
         for (Cuisine c : Cuisine.values()) {

@@ -1,5 +1,7 @@
 package database;
 
+import restaurant.Cuisine;
+import restaurant.GeneralLocation;
 import restaurant.Restaurant;
 
 import java.sql.Connection;
@@ -33,28 +35,32 @@ public class DatabaseManager {
             pstmt.setString(2, restaurant.getNormalizedName());
             pstmt.setString(3, restaurant.getType());
             pstmt.setString(4, restaurant.getGeneralLocation());
+
             pstmt.executeUpdate();
             System.out.printf("Restaurant: %s successfully added", restaurant.getName());
         } catch (SQLException e) {
+            //TODO add uniqueness check
             System.out.println("Failed to add restaurant");
             System.out.println(e.getMessage());
             throw e;
         }
     }
 
-    public String getRestaurant() throws SQLException{
-        String query = "SELECT name FROM restaurants WHERE id = (?)";
+    //TODO
+    public void deleteRestaurant(String name) {
+
+    }
+
+    public Restaurant getRestaurant() throws SQLException{
+        String query = "SELECT * FROM restaurants ORDER BY RANDOM() LIMIT 1";
         try (var pstmt = connection.prepareStatement(query)){
-            int nRow =  getRows();
-
-            if (nRow == 0) {
-                throw new SQLException("No restaurant in database");
-            }
-
-            int rRow = random.nextInt(nRow) + 1;
-            pstmt.setInt(1, rRow);
             var result = pstmt.executeQuery();
-            return result.getString("name");
+            Restaurant restaurant = new Restaurant();
+
+            restaurant.setName(result.getString("name"));
+            restaurant.setType(Cuisine.valueOf(result.getString("cuisine")));
+            restaurant.setGeneralLocation(GeneralLocation.valueOf(result.getString("location")));
+            return restaurant;
         } catch (SQLException e) {
             System.out.println("Failed to get restaurant");
             throw e;

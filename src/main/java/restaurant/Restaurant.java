@@ -12,6 +12,10 @@ public class Restaurant {
         this.type = type;
     }
 
+    public Restaurant() {
+        name = "";
+    }
+
     public String getName() {
         return name;
     }
