@@ -20,16 +20,22 @@ public class Restaurant {
         this.name = name;
     }
 
-    public GeneralLocation getGeneralLocation() {
-        return generalLocation;
+    public String getNormalizedName() {
+        String normalizedName = name.toLowerCase();
+        normalizedName = normalizedName.replaceAll("\\s","");
+        return normalizedName;
+    }
+
+    public String getGeneralLocation() {
+        return generalLocation.toString();
     }
 
     public void setGeneralLocation(GeneralLocation generalLocation) {
         this.generalLocation = generalLocation;
     }
 
-    public Cuisine getType() {
-        return type;
+    public String getType() {
+        return type.toString();
     }
 
     public void setType(Cuisine type) {
