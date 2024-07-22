@@ -1,5 +1,7 @@
 package database;
 
+import restaurant.Restaurant;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -24,12 +26,15 @@ public class DatabaseManager {
         }
     }
 
-    public void addRestaurant(String name) throws SQLException {
-        String query = "INSERT INTO restaurants(name) VALUES (?)";
+    public void addRestaurant(Restaurant restaurant) throws SQLException {
+        String query = "INSERT INTO restaurants(name, normalized_name, cuisine, location) VALUES (?, ?, ?, ?)";
         try (var pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, name);
+            pstmt.setString(1, restaurant.getName());
+            pstmt.setString(2, restaurant.getNormalizedName());
+            pstmt.setString(3, restaurant.getType());
+            pstmt.setString(4, restaurant.getGeneralLocation());
             pstmt.executeUpdate();
-            System.out.printf("Restaurant: %s successfully added", name);
+            System.out.printf("Restaurant: %s successfully added", restaurant.getName());
         } catch (SQLException e) {
             System.out.println("Failed to add restaurant");
             System.out.println(e.getMessage());
