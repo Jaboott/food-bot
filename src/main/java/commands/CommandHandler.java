@@ -41,17 +41,19 @@ public class CommandHandler extends ListenerAdapter {
                 break;
             case "add":
                 try {
+                    event.deferReply().queue();
                     Restaurant restaurant = restaurantBuilder(event);
-                    databaseManager.addRestaurant(restaurant.getName());
-                    event.reply("**"+restaurant.getName() + "** added").queue();
+                    databaseManager.addRestaurant(restaurant);
+                    event.getHook().sendMessage("**" + restaurant.getName() + "** added").queue();
                 } catch (SQLException e) {
                     event.reply( "Failed to add restaurant").queue();
                 }
                 break;
             case "random":
                 try {
-                    String restaurant = databaseManager.getRestaurant();
-                    event.reply(responseRandomizer(restaurant)).queue();
+                    event.deferReply().queue();
+                    Restaurant restaurant = databaseManager.getRestaurant();
+                    event.getHook().sendMessage(responseRandomizer(restaurant.getName())).queue();
                 } catch (SQLException e) {
                     event.reply( "Failed to retrieve restaurant").queue();
                 }
