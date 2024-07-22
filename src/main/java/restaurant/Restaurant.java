@@ -6,7 +6,7 @@ public class Restaurant {
     private GeneralLocation generalLocation;
     private Cuisine type;
 
-    public Restaurant(String name, GeneralLocation generalLocation, Cuisine type) {
+    public Restaurant(String name, Cuisine type, GeneralLocation generalLocation) {
         this.name = name;
         this.generalLocation = generalLocation;
         this.type = type;

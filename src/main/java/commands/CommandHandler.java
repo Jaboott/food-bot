@@ -3,6 +3,9 @@ package commands;
 import database.DatabaseManager;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import restaurant.Cuisine;
+import restaurant.GeneralLocation;
+import restaurant.Restaurant;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -38,9 +41,9 @@ public class CommandHandler extends ListenerAdapter {
                 break;
             case "add":
                 try {
-                    String restaurant = event.getOption("restaurant").getAsString();
-                    databaseManager.addRestaurant(restaurant);
-                    event.reply(restaurant + " added").queue();
+                    Restaurant restaurant = restaurantBuilder(event);
+                    databaseManager.addRestaurant(restaurant.getName());
+                    event.reply("**"+restaurant.getName() + "** added").queue();
                 } catch (SQLException e) {
                     event.reply( "Failed to add restaurant").queue();
                 }
@@ -60,6 +63,13 @@ public class CommandHandler extends ListenerAdapter {
         String response = GET_RESTAURANT_RESPONSE.get(random.nextInt(GET_RESTAURANT_RESPONSE.size()-1));
         response = String.format(response, restaurant);
         return response;
+    }
+
+    private Restaurant restaurantBuilder(SlashCommandInteractionEvent event) {
+        String name = event.getOption("restaurant").getAsString();
+        Cuisine type = Cuisine.valueOf(event.getOption("type").getAsString().toUpperCase());
+        GeneralLocation generalLocation = GeneralLocation.valueOf(event.getOption("location").getAsString().toUpperCase());
+        return new Restaurant(name, type, generalLocation);
     }
 
 }
