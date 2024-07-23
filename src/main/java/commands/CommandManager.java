@@ -32,6 +32,7 @@ public class CommandManager {
 
     private OptionData buildCuisine() {
         OptionData optionData = new OptionData(OptionType.STRING, "type", "The type of cuisine", true);
+        // Building command options based on the different Enums under Cuisine
         for (Cuisine c : Cuisine.values()) {
             optionData.addChoice(c.getType() + " Cuisine", c.name());
         }
@@ -40,6 +41,7 @@ public class CommandManager {
 
     private OptionData buildGeneralLocation() {
         OptionData optionData = new OptionData(OptionType.STRING, "location", "The general location of the restaurant", true);
+        // Building command options based on the different Enums under GeneralLocation
         for (GeneralLocation l : GeneralLocation.values()) {
             optionData.addChoice(l.getLocation(), l.name());
         }

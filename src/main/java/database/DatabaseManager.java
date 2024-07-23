@@ -76,6 +76,7 @@ public class DatabaseManager {
     public void deleteRestaurant(String name) throws SQLException {
         String queryMain = "DELETE FROM restaurants WHERE name = ?";
         String queryFts = "DELETE FROM restaurants_fts WHERE name = ?";
+
         try  {
             connection.setAutoCommit(false);
             try (var pstmt = connection.prepareStatement(queryMain)) {

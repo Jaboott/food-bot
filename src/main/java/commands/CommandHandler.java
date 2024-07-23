@@ -87,7 +87,13 @@ public class CommandHandler extends ListenerAdapter {
             case "remove":
                 try {
                     List<Restaurant> restaurants;
-                    restaurants = databaseManager.searchRestaurants(event.getFocusedOption().getValue());
+                    String currentText = event.getFocusedOption().getValue();
+
+                    // Skip searching if string is empty
+                    if (currentText.isEmpty()) {
+                        break;
+                    }
+                    restaurants = databaseManager.searchRestaurants(currentText);
 
                     List<Command.Choice> options = new ArrayList<>();
                     for (Restaurant restaurant : restaurants) {
@@ -109,6 +115,7 @@ public class CommandHandler extends ListenerAdapter {
     }
 
     private Restaurant restaurantBuilder(SlashCommandInteractionEvent event) {
+        // Builds a restaurant object based on event
         String name = event.getOption("restaurant").getAsString();
         Cuisine type = Cuisine.valueOf(event.getOption("type").getAsString().toUpperCase());
         GeneralLocation generalLocation = GeneralLocation.valueOf(event.getOption("location").getAsString().toUpperCase());
