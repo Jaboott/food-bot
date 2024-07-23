@@ -73,9 +73,29 @@ public class DatabaseManager {
 
     }
 
-    //TODO
-    public void deleteRestaurant(String name) {
+    public void deleteRestaurant(String name) throws SQLException {
+        String queryMain = "DELETE FROM restaurants WHERE name = ?";
+        String queryFts = "DELETE FROM restaurants_fts WHERE name = ?";
+        try  {
+            connection.setAutoCommit(false);
+            try (var pstmt = connection.prepareStatement(queryMain)) {
+                pstmt.setString(1, name);
+                pstmt.executeUpdate();
+            }
 
+            try (var pstmt = connection.prepareStatement(queryFts)) {
+                pstmt.setString(1, name);
+                pstmt.executeUpdate();
+            }
+            connection.commit();
+            System.out.println("Deleted restaurant from database");
+        } catch (SQLException e) {
+            System.out.println("Failed to delete restaurant");
+            System.out.println(e.getMessage());
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);
+        }
     }
 
     public Restaurant getRestaurant() throws SQLException {

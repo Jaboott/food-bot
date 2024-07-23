@@ -69,7 +69,14 @@ public class CommandHandler extends ListenerAdapter {
                 }
                 break;
             case "remove":
-                event.reply("Function coming soon!");
+                try {
+                    event.deferReply().queue();
+                    String name = event.getOption("restaurant").getAsString();
+                    databaseManager.deleteRestaurant(name);
+                    event.getHook().sendMessage("**" + name + "** have been removed from the database").queue();
+                } catch (SQLException e) {
+                    event.getHook().sendMessage("Failed to delete restaurant from the database").queue();
+                }
                 break;
         }
     }
