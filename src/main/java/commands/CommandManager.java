@@ -22,7 +22,9 @@ public class CommandManager {
                         .addOption(OptionType.STRING, "restaurant", "The name of the restaurant.", true)
                         .addOptions(buildCuisine())
                         .addOptions(buildGeneralLocation()),
-                Commands.slash("random", "Chooses a random restaurant for you.")
+                Commands.slash("random", "Chooses a random restaurant for you."),
+                Commands.slash("remove", "Remove specified restaurant for you.")
+                        .addOption(OptionType.STRING, "restaurant", "The name of the restaurant.", true, true)
         ).queue();
 
         System.out.println("Finish loading commands");

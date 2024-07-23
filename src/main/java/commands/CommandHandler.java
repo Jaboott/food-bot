@@ -1,14 +1,17 @@
 package commands;
 
 import database.DatabaseManager;
+import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.Command;
 import org.sqlite.SQLiteErrorCode;
 import restaurant.Cuisine;
 import restaurant.GeneralLocation;
 import restaurant.Restaurant;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -63,6 +66,30 @@ public class CommandHandler extends ListenerAdapter {
                     event.getHook().sendMessage(responseRandomizer(restaurant.getName())).queue();
                 } catch (SQLException e) {
                     event.reply( "Failed to retrieve restaurant").queue();
+                }
+                break;
+            case "remove":
+                event.reply("Function coming soon!");
+                break;
+        }
+    }
+
+    @Override
+    public void onCommandAutoCompleteInteraction(CommandAutoCompleteInteractionEvent event) {
+        switch(event.getName()) {
+            case "remove":
+                try {
+                    List<Restaurant> restaurants;
+                    restaurants = databaseManager.searchRestaurants(event.getFocusedOption().getValue());
+
+                    List<Command.Choice> options = new ArrayList<>();
+                    for (Restaurant restaurant : restaurants) {
+                        options.add(new Command.Choice(restaurant.getName(), restaurant.getName()));
+                    }
+
+                    event.replyChoices(options).queue();
+                } catch (SQLException e) {
+                    System.out.printf("Failed to retrieve restaurants matching: %s%n", event.getFocusedOption().getValue());
                 }
                 break;
         }
