@@ -16,8 +16,6 @@ public class CommandManager {
 
     public void initCommands() {
         jda.updateCommands().addCommands(
-                Commands.slash("echo", "Repeats messages back to you.")
-                        .addOption(OptionType.STRING, "message", "The message to repeat."),
                 Commands.slash("add", "Add a restaurant to the bot.")
                         .addOption(OptionType.STRING, "restaurant", "The name of the restaurant.", true)
                         .addOptions(buildCuisine(true, "The type of cuisine"))
@@ -26,7 +24,8 @@ public class CommandManager {
                         .addOptions(buildCuisine(false, "Choose random restaurant with specific type of cuisine"))
                         .addOptions(buildGeneralLocation(false, "Choose random restaurant with specific location")),
                 Commands.slash("remove", "Remove specified restaurant for you.")
-                        .addOption(OptionType.STRING, "restaurant", "The name of the restaurant.", true, true)
+                        .addOption(OptionType.STRING, "restaurant", "The name of the restaurant.", true, true),
+                Commands.slash("restaurants", "Show all of the restaurants in the database for you.")
         ).queue();
 
         System.out.println("Finish loading commands");

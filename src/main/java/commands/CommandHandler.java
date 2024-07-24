@@ -40,9 +40,6 @@ public class CommandHandler extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         switch (event.getName()) {
-            case "echo":
-                event.reply(event.getOption("message").getAsString()).queue();
-                break;
             case "add":
                 try {
                     event.deferReply().queue();
@@ -89,6 +86,24 @@ public class CommandHandler extends ListenerAdapter {
                     event.getHook().sendMessage("Failed to delete restaurant from the database").queue();
                 }
                 break;
+            case "restaurants":
+                try {
+                    event.deferReply().queue();
+                    List<Restaurant> restaurants= databaseManager.showAll();
+                    if (restaurants.isEmpty()) {
+                        event.getHook().sendMessage("Theres no restaurants in the database yet!").queue();
+                        break;
+                    }
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("**__Restaurants List:__**\n\n");
+                    for (int i = 0; i < restaurants.size(); i++) {
+                        Restaurant restaurant = restaurants.get(i);
+                        sb.append(String.format("**%d.** %s - %s - %s\n", i+1, restaurant.getName(), restaurant.getType(), restaurant.getGeneralLocation()));
+                    }
+                    event.getHook().sendMessage(sb.toString()).queue();
+                } catch (SQLException e) {
+                    event.getHook().sendMessage("Failed to show restaurants").queue();
+                }
         }
     }
 
