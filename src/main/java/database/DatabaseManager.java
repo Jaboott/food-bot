@@ -89,9 +89,9 @@ public class DatabaseManager {
                 pstmt.executeUpdate();
             }
             connection.commit();
-            System.out.println("Deleted restaurant from database");
+            System.out.println(this.getClass() + ": Deleted restaurant from database");
         } catch (SQLException e) {
-            System.out.println("Failed to delete restaurant");
+            System.out.println(this.getClass() + "Failed to delete restaurant");
             System.out.println(e.getMessage());
             throw e;
         } finally {
@@ -99,10 +99,32 @@ public class DatabaseManager {
         }
     }
 
-    public Restaurant getRestaurant() throws SQLException {
-        String query = "SELECT * FROM restaurants ORDER BY RANDOM() LIMIT 1";
-        try (var pstmt = connection.prepareStatement(query)){
+    public Restaurant getRandomRestaurant(String cuisine, String location) throws SQLException {
+        StringBuilder query = new StringBuilder("SELECT * FROM restaurants WHERE 1=1");
+        if (cuisine != null) {
+            query.append(" AND cuisine = ?");
+        }
+        if (location != null) {
+            query.append(" AND location = ?");
+        }
+        query.append(" ORDER BY RANDOM() LIMIT 1");
+
+        try (var pstmt = connection.prepareStatement(query.toString())){
+            int index = 1;
+
+            if (cuisine != null) {
+                pstmt.setString(index++, cuisine);
+            }
+            if (location != null) {
+                pstmt.setString(index, location);
+            }
+
             var result = pstmt.executeQuery();
+
+            // return null if no result matches specified settings
+            if (!result.next()) {
+                return null;
+            }
             Restaurant restaurant = new Restaurant();
 
             restaurant.setName(result.getString("name"));
@@ -110,7 +132,8 @@ public class DatabaseManager {
             restaurant.setGeneralLocation(GeneralLocation.valueOf(result.getString("location")));
             return restaurant;
         } catch (SQLException e) {
-            System.out.println("Failed to get restaurant");
+            System.out.println(this.getClass() + "Failed to get restaurant");
+            System.out.println(e.getMessage());
             throw e;
         }
     }

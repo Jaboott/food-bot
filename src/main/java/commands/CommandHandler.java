@@ -50,7 +50,6 @@ public class CommandHandler extends ListenerAdapter {
                     databaseManager.addRestaurant(restaurant);
                     event.getHook().sendMessage("**" + restaurant.getName() + "** added").queue();
                 } catch (SQLException e) {
-
                     // Check if the error comes from failing uniqueness
                     if (e.getErrorCode() == SQLiteErrorCode.SQLITE_CONSTRAINT.code) {
                         event.getHook().sendMessage("The restaurant is already in the database").queue();
@@ -62,10 +61,22 @@ public class CommandHandler extends ListenerAdapter {
             case "random":
                 try {
                     event.deferReply().queue();
-                    Restaurant restaurant = databaseManager.getRestaurant();
-                    event.getHook().sendMessage(responseRandomizer(restaurant.getName())).queue();
+                    String cuisine = null;
+                    String location = null;
+                    if (event.getOption("type") != null) {
+                        cuisine = event.getOption("type").getAsString();
+                    }
+                    if (event.getOption("location") != null) {
+                        location = event.getOption("location").getAsString();
+                    }
+                    Restaurant restaurant = databaseManager.getRandomRestaurant(cuisine, location);
+                    if (restaurant == null) {
+                        event.getHook().sendMessage( "No restaurant in database matches the specified requirements").queue();
+                    } else {
+                        event.getHook().sendMessage(responseRandomizer(restaurant.getName())).queue();
+                    }
                 } catch (SQLException e) {
-                    event.reply( "Failed to retrieve restaurant").queue();
+                    event.getHook().sendMessage( "Failed to retrieve restaurant").queue();
                 }
                 break;
             case "remove":
