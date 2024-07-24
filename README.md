@@ -1,4 +1,4 @@
-## Restaurant Recommendation Bot
+# Restaurant Recommendation Bot
 
 ## Overview
 A simple discord bot that helps user decide which restaurant to eat at when you can't make up your mind. 
@@ -19,7 +19,7 @@ A simple discord bot that helps user decide which restaurant to eat at when you 
 
 Add restaurants to database 
 
-`/ add`
+`/add`
 
 <img src="https://i.imgur.com/dV8RjkH.png" height=250>
 
@@ -27,7 +27,7 @@ Add restaurants to database
 
 Remove restaurants from the database
 
-`/ remove`
+`/remove`
 
 <img src="https://i.imgur.com/GJOymV1.png" height=180>
 
@@ -35,6 +35,6 @@ Remove restaurants from the database
 
 Get a random restaurant from the database with or without filters
 
-`/ random`
+`/random`
 
 <img src="https://i.imgur.com/1jeTPbz.png" height="170">
