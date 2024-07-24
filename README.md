@@ -14,6 +14,7 @@ A simple discord bot that helps user decide which restaurant to eat at when you 
 - Add
 - Remove
 - Random
+- Restaurants
 
 ### Add
 
@@ -38,3 +39,9 @@ Get a random restaurant from the database with or without filters
 `/random FILTER_TYPE FILTER_LOCATION`
 
 <img src="https://i.imgur.com/1jeTPbz.png" height="170">
+
+### Restaurants
+
+Display every restaurant stored in the database
+
+`/restaurants`
