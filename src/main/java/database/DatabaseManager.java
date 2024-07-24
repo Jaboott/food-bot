@@ -142,36 +142,42 @@ public class DatabaseManager {
     public List<Restaurant> searchRestaurants(String name) throws SQLException {
         String query = "SELECT * FROM restaurants_fts WHERE name MATCH ?";
         System.out.printf("Searching for name: %s%n", name);
+
         try (var pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, name);
             var rs = pstmt.executeQuery();
 
-            List<Restaurant> restaurants = new ArrayList<>();
-
-            // Building the list of restaurants from database query
-            while(rs.next()) {
-                String restaurant = rs.getString("name");
-                Cuisine cuisine = Cuisine.valueOf(rs.getString("cuisine"));
-                GeneralLocation generalLocation = GeneralLocation.valueOf(rs.getString("location"));
-                restaurants.add(new Restaurant(restaurant, cuisine, generalLocation));
-            }
-
-            return restaurants;
+            return buildRestaurants(rs);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw e;
         }
     }
 
-    private int getRows() throws SQLException {
-        String query = "SELECT COUNT(name) FROM restaurants";
-        try (var stmt = connection.createStatement()) {
-            var rows = stmt.executeQuery(query);
-            return rows.getInt("count(name)");
+    public List<Restaurant> showAll() throws SQLException {
+        String query = "SELECT * FROM restaurants ORDER BY name";
+
+        try (var pstmt = connection.prepareStatement(query)) {
+            var rs = pstmt.executeQuery();
+
+            return buildRestaurants(rs);
         } catch (SQLException e) {
-            System.out.println("Failed to get rows.");
+            System.out.println(e.getMessage());
             throw e;
         }
     }
 
+    private List<Restaurant> buildRestaurants(ResultSet rs) throws SQLException {
+        List<Restaurant> restaurants = new ArrayList<>();
+
+        // Building the list of restaurants from database query
+        while(rs.next()) {
+            String restaurant = rs.getString("name");
+            Cuisine cuisine = Cuisine.valueOf(rs.getString("cuisine"));
+            GeneralLocation generalLocation = GeneralLocation.valueOf(rs.getString("location"));
+            restaurants.add(new Restaurant(restaurant, cuisine, generalLocation));
+        }
+
+        return restaurants;
+    }
 }
