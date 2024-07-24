@@ -19,7 +19,7 @@ A simple discord bot that helps user decide which restaurant to eat at when you 
 
 Add restaurants to database 
 
-`/add`
+`/add RESTAURANT_NAME CUISINE_TYPE GENERAL_LOCATION`
 
 <img src="https://i.imgur.com/dV8RjkH.png" height=250>
 
@@ -27,7 +27,7 @@ Add restaurants to database
 
 Remove restaurants from the database
 
-`/remove`
+`/remove RESTAURANT_NAME`
 
 <img src="https://i.imgur.com/GJOymV1.png" height=180>
 
@@ -35,6 +35,6 @@ Remove restaurants from the database
 
 Get a random restaurant from the database with or without filters
 
-`/random`
+`/random FILTER_TYPE FILTER_LOCATION`
 
 <img src="https://i.imgur.com/1jeTPbz.png" height="170">
