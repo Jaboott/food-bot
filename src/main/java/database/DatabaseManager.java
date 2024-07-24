@@ -77,6 +77,7 @@ public class DatabaseManager {
         String queryMain = "DELETE FROM restaurants WHERE name = ?";
         String queryFts = "DELETE FROM restaurants_fts WHERE name = ?";
 
+        // Using transaction to delete from both tables
         try  {
             connection.setAutoCommit(false);
             try (var pstmt = connection.prepareStatement(queryMain)) {
@@ -147,7 +148,7 @@ public class DatabaseManager {
 
             List<Restaurant> restaurants = new ArrayList<>();
 
-            // Building the list of restaurants
+            // Building the list of restaurants from database query
             while(rs.next()) {
                 String restaurant = rs.getString("name");
                 Cuisine cuisine = Cuisine.valueOf(rs.getString("cuisine"));
